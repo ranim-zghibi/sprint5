@@ -1,0 +1,26 @@
+# @format
+server:
+    port: 4010
+
+eureka:
+    client:
+        service-url:
+            defaultZone: http://localhost:8761/eureka
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: users-microservice
+          uri: lb://users-microservice
+          predicates:
+            - Path=/users/**
+          order: 0
+
+        - id: parfums
+          uri: lb://parfums
+          predicates:
+            - Path=/parfums/**
+          order: 1
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
